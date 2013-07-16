@@ -30,7 +30,8 @@ var Weapon_RespawnDelay         = 15;
 
 //the number of bots the game instantiates
 
-var NumBots = 3;
+var NumBots = 2;
+var NumTeams = 2;
 
 //this is the maximum number of search cycles allocated to *all* current path
 // planning searches per update
@@ -110,11 +111,13 @@ var Bot_AggroGoalTweaker        = 1.0;
 
 //use these values to tweak the amount that each steering force
 //contributes to the total steering force
+var HideWeight                  = 15.0;
 var SeparationWeight            = 10.0;
-var WallAvoidanceWeight         = 10.0;
+var WallAvoidanceWeight         = 25.0;
 var WanderWeight                = 1.0;
 var SeekWeight                  = 0.5;
-var ArriveWeight                =  1.0;
+var ArriveWeight                = 1.0;
+var PursuitWeight				= 5.0;
 
 //how close a neighbour must be before an agent considers it
 //to be within its neighborhood (for separation)
@@ -173,8 +176,8 @@ var Slug_Damage                 = 100;
 var ShotGun_FiringFreq          = 1;
 var ShotGun_DefaultRounds       = 15;
 var ShotGun_MaxRoundsCarried    = 50;
-var ShotGun_NumBallsInShell     = 20;
-var ShotGun_Spread              = 0.05;
+var ShotGun_NumBallsInShell     = 6;
+var ShotGun_Spread              = 0.1;
 var ShotGun_IdealRange          = 100;
 var ShotGun_SoundRange          = 400;
 

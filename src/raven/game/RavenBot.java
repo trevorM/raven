@@ -1,3 +1,4 @@
+
 package raven.game;
 
 import java.util.ArrayList;
@@ -719,3 +720,5 @@ public class RavenBot extends MovingEntity implements IRavenBot {
 		return sensoryMem;
 	}
 }
+
+
