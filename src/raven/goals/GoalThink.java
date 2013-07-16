@@ -164,4 +164,12 @@ public class GoalThink extends GoalComposite<RavenBot> {
 
 	@Override
 	public void terminate() {}
+
+	public void addGoal_hide() {
+		if (notPresent(Goal.GoalType.goal_hide)){
+			removeAllSubgoals();
+			AddSubgoal( new Goal_Hide(m_pOwner));
+			Log.debug("GoalThink", "Added new Goal_Hide to bot " + m_pOwner.ID());
+		}
+	}
 }

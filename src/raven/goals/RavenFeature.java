@@ -108,6 +108,8 @@ public class RavenFeature {
 		default: throw new RuntimeException("Trying to calculate unknown weapon!");
 		}
 	}
+
+
 }
 
 
