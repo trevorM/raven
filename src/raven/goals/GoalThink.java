@@ -15,6 +15,7 @@ public class GoalThink extends GoalComposite<RavenBot> {
 	private double RailgunBias = 0.0;
 	private double ExploreBias = 0;
 	private double AttackBias  = 0;
+	private double HideBias = 0.0;
 
 	public GoalThink(RavenBot ravenBot) {
 		super(ravenBot, Goal.GoalType.goal_think);
@@ -27,11 +28,13 @@ public class GoalThink extends GoalComposite<RavenBot> {
 		RailgunBias = Math.random() + 0.5;
 		ExploreBias = Math.random() + 0.5;
 		AttackBias  = Math.random() + 0.5;
+		HideBias    = Math.random() + 0.5;
 
 		m_Evaluators.add(new GetHealthGoal_Evaluator(HealthBias));
 		m_Evaluators.add(new ExploreGoal_Evaluator(ExploreBias));
 		m_Evaluators.add(new AttackTargetGoal_Evaluator(AttackBias));
-
+		m_Evaluators.add(new HideGoal_Evaluator(HideBias));
+		
 		try {
 			m_Evaluators.add(new GetWeaponGoal_Evaluator(ShotgunBias,
 					RavenObject.SHOTGUN));

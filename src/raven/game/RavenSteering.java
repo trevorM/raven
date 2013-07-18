@@ -42,7 +42,8 @@ public class RavenSteering {
 		ARRIVE(4),
 		WANDER(8),
 		SEPARATION(16),
-		WALL_AVOIDANCE(32);
+		WALL_AVOIDANCE(32),
+		HIDE(64);
 
 		private int value;
 		private BehaviorType(int i) {value = i;}
@@ -88,6 +89,7 @@ public class RavenSteering {
 	private double        weightWallAvoidance;
 	private double        weightSeek;
 	private double        weightArrive;
+	private double        weightHide;
 
 
 	/** how far the agent can 'see' */
@@ -342,7 +344,22 @@ public class RavenSteering {
 		
 		return steeringForce;
 	}
-
+	
+	/**this behavior makes the agent hide in closest spot given there are no ravenBots by it
+	 * target- ravenBot that comes into line of site and initiates hide, want to run in 
+	 * directions closest to opposite if possible
+	 * list<IRavenBot>- positions of all ravenbots?**/
+	/*private Vector2D hide(final Vector2D hideSpot, final Deceleration deceleration, final List<IRavenBot> agents){
+		
+		Vector2D fromTarget = target.pos().sub(ravenBot.pos());//we want to hide from target
+		
+		double RelativeHeading = ravenBot.heading().dot(target.heading());
+		return fromTarget;
+		
+	/*	if(ravenBot.canStepBackward()){
+			//turn arount and run
+		}*/
+	//}
 
 	/* 
 	 * END BEHAVIOR DECLARATIONS

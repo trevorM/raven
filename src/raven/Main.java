@@ -42,6 +42,7 @@ public class Main {
     			try {
     				//GameCanvas.startDrawing(game.getMap().getSizeX(), game.getMap().getSizeY());
     				GameCanvas.startDrawing();
+    				GameCanvas.line(0.0, 0.0, 900, 670);
     				game.render();
     			} finally {
     				GameCanvas.stopDrawing();

@@ -18,11 +18,11 @@ public enum RavenObject {
 	ROCKET_LAUNCHER(7, "Rocket Launcher"),
 	SHOTGUN(8, "Shotgun"),
 	BLASTER(9, "Blaster"),
-	OBSTACLE(10, "Obstacle"),
+	OBSTACLE(10, "Obstacle"),  //possible unemplemented 
 	SLIDING_DOOR(11, "Sliding Door"),
 	TRIGGER(12, "Door Trigger"),
 	PROJECTILE(13, "Projectile"),
-	HIDE(14, "Hide");
+	HIDE(14, "Obstacle");
 	
 	private final int index;
 	private final String description;

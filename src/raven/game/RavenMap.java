@@ -153,6 +153,9 @@ public class RavenMap {
 		
 		// delete the partition info
 		spacePartition = null;
+		
+	/*	// delete hids
+		hides.clear();*/
 	}
 	
 	public RavenMap() {

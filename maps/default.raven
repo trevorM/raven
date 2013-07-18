@@ -1,5 +1,15 @@
 <RavenMap>
   <walls>
+  	<Wall2D>
+      <from>
+        <x>50.0</x>
+        <y>55.0</y>
+      </from>
+      <to>
+        <x>100.0</x>
+        <y>55.0</y>
+      </to>
+    </Wall2D>
     <Wall2D>
       <from>
         <x>119.0</x>

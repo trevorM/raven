@@ -20,6 +20,7 @@ import raven.game.triggers.TriggerRegionRectangle;
 import raven.game.triggers.TriggerSystem;
 import raven.game.triggers.TriggerWeaponGiver;
 import raven.math.CellSpacePartition;
+import raven.math.Obstacle;
 import raven.math.Vector2D;
 import raven.math.Wall2D;
 import raven.math.graph.SparseGraph;
@@ -37,6 +38,7 @@ public class MapSerializer {
 		XStream streamer = new XStream();
 		
 		//setup aliases to prevent fully qualified autogens, this is a purely cosmetic change
+		streamer.processAnnotations(Obstacle.class);
 		streamer.processAnnotations(RavenMap.class);
 		streamer.processAnnotations(Wall2D.class);
 		streamer.processAnnotations(RavenBot.class);
