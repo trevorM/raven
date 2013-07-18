@@ -17,6 +17,7 @@ import raven.game.triggers.TriggerSoundNotify;
 import raven.game.triggers.TriggerSystem;
 import raven.game.triggers.TriggerWeaponGiver;
 import raven.math.CellSpacePartition;
+import raven.math.Obstacle;
 import raven.math.Vector2D;
 import raven.math.Wall2D;
 import raven.math.graph.GraphNode;
@@ -31,6 +32,9 @@ public class RavenMap {
 	
 	/** the walls that comprise the current map's architecture. */
 	private ArrayList<Wall2D> walls;
+	
+	/** the obstacles that comprise the current map's architecture. */
+	private ArrayList<Obstacle> obstacles;
 	
 	/** trigger are objects that define a region of space. When a raven bot
 	 * enters that area, it 'triggers' an event. That event may be anything
@@ -154,14 +158,15 @@ public class RavenMap {
 		// delete the partition info
 		spacePartition = null;
 		
-	/*	// delete hids
-		hides.clear();*/
+		// delete obstacles
+		obstacles.clear();
 	}
 	
 	public RavenMap() {
 		triggerSystem = new TriggerSystem<Trigger<IRavenBot>>();
 		doors = new ArrayList<RavenDoor>();
 		walls = new ArrayList<Wall2D>();
+		obstacles = new ArrayList<Obstacle>();
 		spawnPoints = new ArrayList<Vector2D>();
 		sizeX = sizeY = 500;
 		navGraph = new SparseGraph<NavGraphNode<Trigger<IRavenBot>>, NavGraphEdge>();
@@ -192,6 +197,18 @@ public class RavenMap {
 		Wall2D wall = new Wall2D(from, to);
 		walls.add(wall);
 		return wall;
+	}
+	
+	/**
+	 * adds an obstacle and returns a pointer to that obstacle.
+	 * @param from wall's starting point
+	 * @param to wall's ending point
+	 * @return the new wall created
+	 * */
+	public Obstacle addObstacle(Vector2D from, Vector2D to) {
+		Obstacle obs = new Obstacle(from, to);
+		obstacles.add(obs);
+		return obs;
 	}
 	
 	public void addSoundTrigger(IRavenBot soundSource, double range) {
@@ -242,6 +259,10 @@ public class RavenMap {
 	
 	public List<Wall2D> getWalls() {
 		return walls;
+	}
+	
+	public List<Obstacle> getObstacles(){
+		return obstacles;
 	}
 	
 	public SparseGraph<NavGraphNode<Trigger<IRavenBot>>, NavGraphEdge> getNavGraph() {
@@ -305,6 +326,12 @@ public class RavenMap {
 			wall.render();
 		}
 		
+		// render all obstacles, none defined yet in xml so throwing exception
+		for (Obstacle obs : obstacles){
+			GameCanvas.thickBluePen();
+			obs.render();
+		} 
+		
 		// render spawn points
 		for (Vector2D point : spawnPoints) {
 			GameCanvas.greyBrush();
@@ -322,7 +349,7 @@ public class RavenMap {
 		
 		RavenMap toCompare = (RavenMap) other;
 		
-		if( (walls.equals(toCompare.walls)) && (triggerSystem.equals(toCompare.triggerSystem)) 
+		if( (walls.equals(toCompare.walls)) && obstacles.equals(toCompare.obstacles) && (triggerSystem.equals(toCompare.triggerSystem)) 
 				&& (spawnPoints.equals(toCompare.spawnPoints)) && (doors.equals(toCompare.doors)) && 
 				(navGraph.equals(toCompare.navGraph)) && (spacePartition.equals(toCompare.spacePartition)) &&
 				(cellSpaceNeighborhoodRange == toCompare.cellSpaceNeighborhoodRange) && 
@@ -335,6 +362,7 @@ public class RavenMap {
 	@Override
 	public int hashCode() {
 		int result = 0;
+		result += obstacles.hashCode();  //also causing issue because no obstacles defined in xml
 		result += walls.hashCode();
 		result += triggerSystem.hashCode();
 		result += spawnPoints.hashCode();

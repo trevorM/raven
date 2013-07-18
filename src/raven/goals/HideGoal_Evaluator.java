@@ -26,7 +26,7 @@ public class HideGoal_Evaluator extends Goal_Evaluator {
 			//of health remaining and inversely proportional to the distance from the
 			//nearest instance of a hidding spot.
 			double Desirability = Tweaker * (1-RavenFeature.Health(pBot)) / 
-			(RavenFeature.DistanceToItem(pBot, RavenObject.HIDE));
+			(RavenFeature.DistanceToItem(pBot, RavenObject.OBSTACLE));
 
 			//ensure the value is in the range 0 to 1
 			RavenFeature.Clamp(Desirability, 0, 1);
@@ -53,6 +53,7 @@ public class HideGoal_Evaluator extends Goal_Evaluator {
 
 	//-------------------------- RenderInfo ---------------------------------------
 	//-----------------------------------------------------------------------------
+	//helps track what bots are doing by displaying desirabilitys and goals in terminol
 	public void RenderInfo(Vector2D Position, RavenBot pBot)
 	{
 			GameCanvas.textAtPos(Position, "Hide: " + String.valueOf((calculateDesirability(pBot))));

@@ -15,6 +15,10 @@ public class Wall2D {
 	protected Vector2D vB;
 	transient protected Vector2D vN;
 	
+	public boolean isObstacle(){
+		return false;
+	}
+	
 	private Object readResolve() {
 		calculateNormal();
 		

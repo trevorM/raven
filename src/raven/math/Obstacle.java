@@ -1,11 +1,18 @@
 package raven.math;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+
+@XStreamAlias("Obstacle")
 public class Obstacle extends Wall2D {
 
 	public Boolean active;
 	
 	public Obstacle() {
 		this.active = true;
+	}
+	
+	public boolean isObstacle(){
+		return true;
 	}
 
 	public Obstacle(Vector2D a, Vector2D b) {
