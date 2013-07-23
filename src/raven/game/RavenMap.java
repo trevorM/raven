@@ -30,11 +30,13 @@ import raven.utils.Pair;
 @XStreamAlias("RavenMap")
 public class RavenMap {
 	
+	
 	/** the walls that comprise the current map's architecture. */
 	private ArrayList<Wall2D> walls;
 	
 	/** the obstacles that comprise the current map's architecture. */
 	private ArrayList<Obstacle> obstacles;
+
 	
 	/** trigger are objects that define a region of space. When a raven bot
 	 * enters that area, it 'triggers' an event. That event may be anything
@@ -62,6 +64,11 @@ public class RavenMap {
 	int sizeX = 0;
 	int sizeY = 0;
 	
+	public List<Obstacle> getObstacles(){
+		return obstacles;
+	}
+	
+
 	/* this will hold a pre-calculated lookup table of the cost to travel
 	 * from */
 	transient private Map<Pair<Integer, Integer>, Double> pathCosts;
@@ -71,7 +78,8 @@ public class RavenMap {
 
 	/** the name of this map, as displayed to the user */
 	private String name;
-		
+	
+	
 	private void partitionNavGraph() {
 		spacePartition = new CellSpacePartition<NavGraphNode<Trigger<IRavenBot>>>(sizeX, sizeY,
 				RavenScript.getInt("NumCellsX"), RavenScript.getInt("NumCellsY"),
@@ -158,7 +166,7 @@ public class RavenMap {
 		// delete the partition info
 		spacePartition = null;
 		
-		// delete obstacles
+		 //delete obstacles
 		obstacles.clear();
 	}
 	
@@ -166,11 +174,11 @@ public class RavenMap {
 		triggerSystem = new TriggerSystem<Trigger<IRavenBot>>();
 		doors = new ArrayList<RavenDoor>();
 		walls = new ArrayList<Wall2D>();
-		obstacles = new ArrayList<Obstacle>();
 		spawnPoints = new ArrayList<Vector2D>();
 		sizeX = sizeY = 500;
 		navGraph = new SparseGraph<NavGraphNode<Trigger<IRavenBot>>, NavGraphEdge>();
 		spacePartition = new CellSpacePartition<NavGraphNode<Trigger<IRavenBot>>>(0.0, 0.0, 0, 0, 0);
+		
 		cellSpaceNeighborhoodRange = 0.0;
 	}
 	
@@ -204,12 +212,15 @@ public class RavenMap {
 	 * @param from wall's starting point
 	 * @param to wall's ending point
 	 * @return the new wall created
-	 * */
-	public Obstacle addObstacle(Vector2D from, Vector2D to) {
-		Obstacle obs = new Obstacle(from, to);
+	 * 
+	 */
+	
+	public Obstacle addObstacle(double x, double y, double radius) {
+		Obstacle obs = new Obstacle(x,y,radius);
 		obstacles.add(obs);
 		return obs;
 	}
+	
 	
 	public void addSoundTrigger(IRavenBot soundSource, double range) {
 		triggerSystem.register(new TriggerSoundNotify(soundSource, range));
@@ -261,9 +272,7 @@ public class RavenMap {
 		return walls;
 	}
 	
-	public List<Obstacle> getObstacles(){
-		return obstacles;
-	}
+
 	
 	public SparseGraph<NavGraphNode<Trigger<IRavenBot>>, NavGraphEdge> getNavGraph() {
 		return navGraph;
@@ -329,6 +338,7 @@ public class RavenMap {
 		// render all obstacles, none defined yet in xml so throwing exception
 		for (Obstacle obs : obstacles){
 			GameCanvas.thickBluePen();
+			Log.info("x" + obstacles.get(0).to().x);
 			obs.render();
 		} 
 		
@@ -362,7 +372,7 @@ public class RavenMap {
 	@Override
 	public int hashCode() {
 		int result = 0;
-		result += obstacles.hashCode();  //also causing issue because no obstacles defined in xml
+		result += obstacles.hashCode();  
 		result += walls.hashCode();
 		result += triggerSystem.hashCode();
 		result += spawnPoints.hashCode();

@@ -1,9 +1,32 @@
 package raven.math;
 
+import raven.ui.GameCanvas;
+
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
+import raven.utils.Log;
+
 @XStreamAlias("Obstacle")
-public class Obstacle extends Wall2D {
+public class Obstacle  {
+	
+	@XStreamAlias("from")
+	protected Vector2D Xy;
+	protected double x;
+	protected double y;
+	@XStreamAlias("to")
+	protected Vector2D radius;
+	
+	protected double r;
+	
+	public Obstacle(Vector2D a, Vector2D b)
+	{
+		Xy = new Vector2D(a);
+		radius = new Vector2D(b);	
+		r = radius.x;
+		x = Xy.x;
+		y = Xy.y;
+	}
+	
 
 	public Boolean active;
 	
@@ -14,15 +37,29 @@ public class Obstacle extends Wall2D {
 	public boolean isObstacle(){
 		return true;
 	}
-
-	public Obstacle(Vector2D a, Vector2D b) {
-		super(a, b);
-		// TODO Auto-generated constructor stub
+	
+	public Obstacle(double x, double y, double r)
+	{
+		this.x = x;
+		this.y = y;
+		this.r = r;
 	}
-
-	public Obstacle(Vector2D a, Vector2D b, Vector2D n) {
-		super(a, b, n);
-		// TODO Auto-generated constructor stub
+	
+	
+	public void render() {
+		render(false);
 	}
+	
+	public void render(boolean renderNormals) {
+		GameCanvas.filledCircle(Xy, radius.x); 
+		}
+	public Vector2D from() { return Xy; }
+	public Vector2D to() { return radius; }
 
-}
+	
+	}
+	
+	
+	
+
+

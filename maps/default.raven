@@ -1,16 +1,16 @@
 <RavenMap>
-  <obstacles>
+  	<obstacles>
   	<Obstacle>
-  		<from>
-        	<x>50.0</x>
-        	<y>75.0</y>
-     	</from>
-      <to>
-        <x>100.0</x>
-        <y>75.0</y>
-      </to>
+        <from>
+        <x>150</x>
+        <y>200</y>
+        </from>
+        <to>
+        <x>20.0</x>
+        <y>0.0</y>
+        </to>
   	</Obstacle>
-  </obstacles>
+  	</obstacles>
   <walls>
   	<Wall2D>
       <from>

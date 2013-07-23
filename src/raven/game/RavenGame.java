@@ -24,6 +24,7 @@ import raven.game.messaging.Dispatcher;
 import raven.game.messaging.RavenMessage;
 import raven.game.navigation.PathManager;
 import raven.game.navigation.RavenPathPlanner;
+import raven.math.Obstacle;
 import raven.math.Vector2D;
 import raven.math.WallIntersectionTest;
 import raven.script.RavenScript;
@@ -65,6 +66,8 @@ public class RavenGame {
 	private String newMapPath;
 	private volatile int botsToAdd;
 
+
+	
 	private void clear() {
 		Log.debug("game", "Clearing Map");
 		// delete the bots
@@ -128,6 +131,9 @@ public class RavenGame {
 		}
 	}
 
+
+	
+	
 	/** The usual suspects */
 	public void render() {
 		Log.trace("game", "Rendering game");
@@ -340,15 +346,16 @@ public class RavenGame {
 		pathManager = null;
 
 		graveMarkers = new GraveMarkers(RavenScript.getDouble("GraveLifetime"));
+		//Obstacle obs = new Obstacle(150, 200, 10);
+		//obstacles.add(obs);
 		pathManager = new PathManager(
 				RavenScript.getInt("MaxSearchCyclesPerUpdateStep"));
 		map = MapSerializer.deserializeMapFromPath(fileName);
 		map.setName(fileName);
 		EntityManager.reset();
 		addBots(RavenScript.getInt("NumBots"));
-		
 		Log.info("game", "Loaded map " + map);
-		
+
 		return true;
 	}
 

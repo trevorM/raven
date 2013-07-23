@@ -17,7 +17,7 @@ public class HideGoal_Evaluator extends Goal_Evaluator {
 	public double calculateDesirability(RavenBot pBot)
 	{
 		
-		if(pBot.health() < 10){
+		if(pBot.health() < 10){//read from params
 			
 			//value used to tweak the desirability
 			Double Tweaker = 0.2;
