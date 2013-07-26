@@ -52,7 +52,6 @@ public class Wall2D {
 	
 	public void render(boolean renderNormals) {
 		GameCanvas.line(vA, vB);
-		
 		if (renderNormals) {
 			int midX = (int)((vA.x + vB.x) / 2);
 			int midY = (int)((vA.y + vB.y) / 2);

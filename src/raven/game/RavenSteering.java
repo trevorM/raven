@@ -9,8 +9,10 @@ import raven.math.Geometry;
 import raven.math.Transformations;
 import raven.math.Vector2D;
 import raven.math.Wall2D;
+import raven.math.Obstacle;
 import raven.script.RavenScript;
 import raven.ui.GameCanvas;
+import raven.utils.Log;
 
 //------------------------------------------------------------------------
 
@@ -43,8 +45,9 @@ public class RavenSteering {
 		WANDER(8),
 		SEPARATION(16),
 		WALL_AVOIDANCE(32),
-		HIDE(64);
-
+		HIDE(64),
+		OBSTACLE_AVOIDANCE(128);
+		
 		private int value;
 		private BehaviorType(int i) {value = i;}
 		public int getValue() {return value;}
@@ -67,10 +70,14 @@ public class RavenSteering {
 
 	/** a vertex buffer to contain the feelers rqd for wall avoidance */  
 	private Vector<Vector2D> feelers;
+	
+	/** a vertex buffer to contain the feelrs for obstacle avoidance */
+	private Vector<Vector2D> obFeelers;
+	
 
 	/** the length of the 'feeler/s' used in wall detection */
 	private double wallDetectionFeelerLength;
-
+	private double obDetectionFeelerLength;
 
 	/** the current position on the wander circle the agent is attempting to
 	 * steer towards */
@@ -90,7 +97,7 @@ public class RavenSteering {
 	private double        weightSeek;
 	private double        weightArrive;
 	private double        weightHide;
-
+	private double		  weightObstacleAvoidance;	
 
 	/** how far the agent can 'see' */
 	private double        viewDistance;
@@ -245,7 +252,7 @@ public class RavenSteering {
 	private Vector2D wallAvoidance(final List<Wall2D> walls) {
 		//the feelers are contained in a std::vector, m_Feelers
 		createFeelers();
-
+		
 		Double DistToThisIP    = 0.0;
 		double DistToClosestIP = Double.MAX_VALUE;
 
@@ -275,7 +282,7 @@ public class RavenSteering {
 								DistToClosestIP = DistToThisIP;
 
 								ClosestWall = w;
-
+		
 								ClosestPoint = point;
 							}
 				}
@@ -289,10 +296,11 @@ public class RavenSteering {
 				//calculate by what distance the projected position of the agent
 				//will overshoot the wall
 				Vector2D overShoot = feelers.get(flr).sub(ClosestPoint);
-
+				
 				//create a force in the direction of the wall normal, with a 
 				//magnitude of the overshoot
 				SteeringForce = walls.get(ClosestWall).normal().mul(overShoot.length());
+			
 			}
 
 		}//next feeler
@@ -301,16 +309,16 @@ public class RavenSteering {
 
 	}
 	
-	private void createFeelers(){
+	private void createFeelers(){ //may need to make new feelers for obstacles due
 		feelers.clear();
-
+		
 		Vector2D temp;
 
 		//feeler pointing straight in front
 		temp = new Vector2D(ravenBot.pos());
 		temp = temp.add(ravenBot.heading().mul(wallDetectionFeelerLength).mul(ravenBot.speed()));
 		feelers.add(temp);
-
+		
 		//feeler to left
 		temp = new Vector2D(ravenBot.heading());
 		Transformations.Vec2DRotateAroundOrigin(temp, -Math.PI / 6);
@@ -322,6 +330,97 @@ public class RavenSteering {
 		feelers.add(ravenBot.pos().add(temp.mul(wallDetectionFeelerLength/2).mul(ravenBot.speed()))); 
 	}
 
+
+
+	private void createObFeelers(){
+		obFeelers.clear(); 
+		
+		Vector2D temp;
+
+		//feeler pointing straight in front
+		temp = new Vector2D(ravenBot.pos());
+		temp = temp.add(ravenBot.heading().mul(obDetectionFeelerLength).mul(ravenBot.speed()));
+		obFeelers.add(temp);
+		
+		//feeler to left
+		temp = new Vector2D(ravenBot.heading());
+		Transformations.Vec2DRotateAroundOrigin(temp, -Math.PI / 6);
+		obFeelers.add(ravenBot.pos().add(temp.mul(obDetectionFeelerLength/2).mul(ravenBot.speed())));
+
+		//feeler to right
+		temp = new Vector2D(ravenBot.heading());
+		Transformations.Vec2DRotateAroundOrigin(temp, Math.PI / 6);
+		obFeelers.add(ravenBot.pos().add(temp.mul(obDetectionFeelerLength/2).mul(ravenBot.speed()))); 
+	}
+
+	
+	private Vector2D obstacleAvoidance(final List<Obstacle> obstacles) {
+		//the feelers are contained in a std::vector, m_Feelers
+		createObFeelers();
+
+		Double DistToThisIP    = 0.0;
+		double DistToClosestIP = Double.MAX_VALUE;
+
+		//this will hold an index into the vector of obstacle
+		int ClosestObs = -1;
+
+		Vector2D SteeringForce = new Vector2D();
+		Vector2D point = new Vector2D();         //used for storing temporary info
+		Vector2D ClosestPoint = new Vector2D();  //holds the closest intersection point
+
+		//examine each feeler in turn
+		for (int flr=0; flr<obFeelers.size(); ++flr)
+		{
+			//run through each wall checking for any intersection points
+			for (int oB=0; oB<obstacles.size(); ++oB)
+			{
+
+				if (Geometry.lineSegmentCircleIntersection(ravenBot.pos(), 
+								obFeelers.get(flr), 
+								obstacles.get(oB).from(), 
+								obstacles.get(oB).to().x))
+				{
+					//is this the closest found so far? If so keep a record
+							if (DistToThisIP < DistToClosestIP)
+							{
+								Log.info("Replacing Obstacle" + oB); // the circle is being detected!
+								DistToClosestIP = DistToThisIP;
+
+								ClosestObs = oB;
+								ClosestPoint = point;
+										
+										}
+				}
+			}//next obstacle
+
+
+			//if an intersection point has been detected, calculate a force  
+			//that will direct the agent away
+			if (ClosestObs >=0)
+			{
+				//calculate by what distance the projected position of the agent
+				//will overshoot the wall
+				Vector2D overShoot = obFeelers.get(flr).sub(ClosestPoint);
+				
+
+				Vector2D normPoint = 
+						Geometry.GetLineSegmentCircleClosestIntersectionPoint(ravenBot.pos(),
+						obFeelers.get(flr), obstacles.get(ClosestObs).from(), obstacles.get(ClosestObs).to().x);
+
+				if(normPoint!=null)
+				{
+				//create a force in the direction of the wall normal, with a 
+				//magnitude of the overshoot
+				SteeringForce = obstacles.get(ClosestObs).calculateNormal(normPoint).mul(overShoot.length());
+				}
+
+				}
+
+		}//next feeler
+
+		return SteeringForce;
+
+	}
 
 	private Vector2D separation(final List<IRavenBot> agents){
 
@@ -349,17 +448,21 @@ public class RavenSteering {
 	 * target- ravenBot that comes into line of site and initiates hide, want to run in 
 	 * directions closest to opposite if possible
 	 * list<IRavenBot>- positions of all ravenbots?**/
-	/*private Vector2D hide(final Vector2D hideSpot, final Deceleration deceleration, final List<IRavenBot> agents){
+	private void hide(List <Obstacle> obstacles, RavenBot me){
+		double shortest = 100000;
+		Obstacle closest = null;
+		for(Obstacle obs : obstacles){
+			Vector2D currentPos = me.pos();
+			Vector2D obsPos = obs.center();
+			double distance = Math.sqrt(Math.pow((currentPos.x - obsPos.x), 2) + Math.pow((currentPos.y - obsPos.y), 2));
+			if(shortest > distance){
+				closest = obs;
+			}
+		}
 		
-		Vector2D fromTarget = target.pos().sub(ravenBot.pos());//we want to hide from target
+		seek(closest.center());//detect the closest intersection point to by getClosestIntersecPointToCircle in geometry seek there and stay then seek to direct other side if you see enemy 
 		
-		double RelativeHeading = ravenBot.heading().dot(target.heading());
-		return fromTarget;
-		
-	/*	if(ravenBot.canStepBackward()){
-			//turn arount and run
-		}*/
-	//}
+	}
 
 	/* 
 	 * END BEHAVIOR DECLARATIONS
@@ -380,7 +483,13 @@ public class RavenSteering {
 
 			if (!accumulateForce(steeringForce, force)) return steeringForce;
 		}
-
+		
+		if (On(BehaviorType.OBSTACLE_AVOIDANCE))
+		{
+			force = obstacleAvoidance(world.getMap().getObstacles()).mul(weightObstacleAvoidance);
+			if (!accumulateForce(steeringForce, force)) return steeringForce;
+		}
+		
 		//these next three can be combined for flocking behavior (wander is
 		//also a good behavior to add into this mix)
 		if (On(BehaviorType.SEPARATION))
@@ -426,10 +535,13 @@ public class RavenSteering {
 		weightSeparation			= RavenScript.getDouble("SeparationWeight");
 		weightWander				= RavenScript.getDouble("WanderWeight");
 		weightWallAvoidance			= RavenScript.getDouble("WallAvoidanceWeight");
+		weightObstacleAvoidance		= RavenScript.getDouble("ObstacleAvoidanceWeight");
 		viewDistance				= RavenScript.getDouble("ViewDistance");
 		wallDetectionFeelerLength	= RavenScript.getDouble("WallDetectionFeelerLength");
+		obDetectionFeelerLength		= RavenScript.getDouble("obDetectionFeelerLength");
 		steeringForce				= new Vector2D();
 		feelers						= new Vector<Vector2D>(3);
+		obFeelers					= new Vector<Vector2D>(3);
 		deceleration				= Deceleration.NORMAL;
 		targetAgent1				= null;
 		wanderDistance				= wanderDist;
@@ -488,18 +600,24 @@ public class RavenSteering {
 	public void wanderOn() { flags |= BehaviorType.WANDER.getValue(); }
 	public void separationOn() { flags |= BehaviorType.SEPARATION.getValue(); }
 	public void wallAvoidanceOn() { flags |= BehaviorType.WALL_AVOIDANCE.getValue(); }
-
+	public void obstacleAvoidanceOn() { flags |= BehaviorType.OBSTACLE_AVOIDANCE.getValue(); }
+	
+	
 	public void seekOff() { if(On(BehaviorType.SEEK)) flags ^= BehaviorType.SEEK.getValue(); }
 	public void arriveOff() { if(On(BehaviorType.ARRIVE)) flags ^= BehaviorType.ARRIVE.getValue(); }
 	public void wanderOff() { if(On(BehaviorType.WANDER)) flags ^= BehaviorType.WANDER.getValue(); }
 	public void separationOff() { if(On(BehaviorType.SEPARATION)) flags ^= BehaviorType.SEPARATION.getValue(); }
 	public void wallAvoidanceOff() { if(On(BehaviorType.WALL_AVOIDANCE)) flags ^= BehaviorType.WALL_AVOIDANCE.getValue(); }
+	public void obstacleAvoidanceOff() { if(On(BehaviorType.OBSTACLE_AVOIDANCE)) flags ^= BehaviorType.OBSTACLE_AVOIDANCE.getValue(); }
+	
 	public boolean seekIsOn() { return On(BehaviorType.SEEK); }
 	public boolean arriveIsOn() { return On(BehaviorType.ARRIVE); }
 	public boolean wanderIsOn() { return On(BehaviorType.WANDER); }
 	public boolean separationIsOn() { return On(BehaviorType.SEPARATION); }
 	public boolean wallAvoidanceIsOn() { return On(BehaviorType.WALL_AVOIDANCE); }
-
+	public boolean obstacleAvoidanceIsOn() { return On(BehaviorType.OBSTACLE_AVOIDANCE); }
+	
+	
 	public final Vector<Vector2D> getFeelers() { return feelers; }
 
 	public final double wanderJitter() { return wanderJitter; }

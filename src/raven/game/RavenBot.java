@@ -193,7 +193,8 @@ public class RavenBot extends MovingEntity implements IRavenBot {
 				RavenScript.getDouble("Bot_MaxHeadTurnRate"),
 				RavenScript.getDouble("Bot_MaxForce"));
 		maxHealth = RavenScript.getInt("Bot_MaxHealth");
-		health = RavenScript.getInt("Bot_MaxHealth");
+		health = 1;
+		//health = RavenScript.getInt("Bot_MaxHealth");
 		this.world = world;
 		numSecondsHitPersistant = RavenScript.getDouble("HitFlashTime");
 		hit = false;

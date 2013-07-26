@@ -16,6 +16,7 @@ public class Obstacle  {
 	@XStreamAlias("to")
 	protected Vector2D radius;
 	
+	protected Vector2D vN;
 	protected double r;
 	
 	public Obstacle(Vector2D a, Vector2D b)
@@ -25,14 +26,12 @@ public class Obstacle  {
 		r = radius.x;
 		x = Xy.x;
 		y = Xy.y;
+		this.active = true;
 	}
 	
 
 	public Boolean active;
 	
-	public Obstacle() {
-		this.active = true;
-	}
 	
 	public boolean isObstacle(){
 		return true;
@@ -43,6 +42,7 @@ public class Obstacle  {
 		this.x = x;
 		this.y = y;
 		this.r = r;
+		this.active = true;
 	}
 	
 	
@@ -51,10 +51,30 @@ public class Obstacle  {
 	}
 	
 	public void render(boolean renderNormals) {
-		GameCanvas.filledCircle(Xy, radius.x); 
+		GameCanvas.filledCircle(Xy, radius.x);
+		//unsure what this does...
+		//if (renderNormals) {
+			//int midX = (int)((vA.x + vB.x) / 2);
+			//int midY = (int)((vA.y + vB.y) / 2);
+			
+			//GameCanvas.line(midX, midY, (int)(midX + (vN.x * 5)), (int)(midY + (vN.y * 5)));}
 		}
+	
+	
+	
+	public Vector2D calculateNormal(Vector2D norm)
+	{
+		double R = Math.sqrt(radius.x);
+		vN = new Vector2D(norm.x/R, norm.y/R);
+		return vN;
+		
+	}
+	
+	
 	public Vector2D from() { return Xy; }
 	public Vector2D to() { return radius; }
+	public Vector2D center() { return Xy; }
+
 
 	
 	}

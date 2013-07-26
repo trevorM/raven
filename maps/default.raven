@@ -14,14 +14,106 @@
   <walls>
   	<Wall2D>
       <from>
-        <x>50.0</x>
-        <y>55.0</y>
+        <x>150.0</x>
+        <y>220.0</y>
       </from>
       <to>
-        <x>100.0</x>
-        <y>55.0</y>
+        <x>162.856</x>
+        <y>215.32</y>
       </to>
-    </Wall2D>
+	</Wall2D>
+     <Wall2D>
+      <from>
+        <x>162.856</x>
+        <y>215.32</y>
+      </from>
+      <to>
+        <x>168.793</x>
+        <y>206.84</y>
+      </to>
+	</Wall2D>
+	<Wall2D>
+      <from>
+        <x>168.793</x>
+        <y>206.84</y>
+      </from>
+      <to>
+        <x>170</x>
+        <y>200</y>
+      </to>
+	</Wall2D>
+      <Wall2D>
+	<from>
+        <x>170</x>
+        <y>200</y>
+      </from>
+      <to>
+        <x>167.32</x>
+        <y>190</y>
+      </to>
+	</Wall2D>
+	<Wall2D>
+	<from>
+        <x>167.32</x>
+        <y>190</y>
+      </from>
+      <to>
+        <x>160.00</x>
+        <y>182.68</y>
+      </to>
+	</Wall2D>
+	<Wall2D>
+	<from>
+        <x>160</x>
+        <y>182.68</y>
+      </from>
+      <to>
+        <x>150</x>
+        <y>180</y>
+      </to>
+	</Wall2D>
+	<Wall2D>
+	<from>
+        <x>150</x>
+        <y>180</y>
+      </from>
+      <to>
+        <x>135.85786</x>
+        <y>185.85786</y>
+      </to>
+	</Wall2D>
+	<Wall2D>
+	<from>
+        <x>135.85786</x>
+        <y>185.85786</y>
+      </from>
+      <to>
+        <x>130</x>
+        <y>200</y>
+      </to>
+	</Wall2D>	
+	<Wall2D>
+	<from>
+        <x>130</x>
+        <y>200</y>
+      </from>
+      <to>
+        <x>135.8578</x>
+        <y>214.142</y>
+      </to>
+	</Wall2D>
+		<Wall2D>
+	<from>
+        <x>135.8578</x>
+        <y>214.142</y>
+      </from>
+      <to>
+        <x>150</x>
+        <y>220</y>
+      </to>
+	</Wall2D>
+
+
     <Wall2D>
       <from>
         <x>119.0</x>

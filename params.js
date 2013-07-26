@@ -118,7 +118,8 @@ var WanderWeight                = 1.0;
 var SeekWeight                  = 0.5;
 var ArriveWeight                = 1.0;
 var PursuitWeight				= 5.0;
-
+var ObstacleAvoidanceWeight     = 10;
+var obDetectionFeelerLength     = 3.0 * Bot_Scale;
 //how close a neighbour must be before an agent considers it
 //to be within its neighborhood (for separation)
 var ViewDistance                =  15.0;
