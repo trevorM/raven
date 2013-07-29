@@ -35,7 +35,7 @@ public class RavenMap {
 	private ArrayList<Wall2D> walls;
 	
 	/** the obstacles that comprise the current map's architecture. */
-	public  ArrayList<Obstacle> obstacles;
+	private ArrayList<Obstacle> obstacles;
 
 	
 	/** trigger are objects that define a region of space. When a raven bot
@@ -178,7 +178,7 @@ public class RavenMap {
 		sizeX = sizeY = 500;
 		navGraph = new SparseGraph<NavGraphNode<Trigger<IRavenBot>>, NavGraphEdge>();
 		spacePartition = new CellSpacePartition<NavGraphNode<Trigger<IRavenBot>>>(0.0, 0.0, 0, 0, 0);
-		obstacles = new ArrayList<Obstacle>();
+		
 		cellSpaceNeighborhoodRange = 0.0;
 	}
 	
@@ -338,7 +338,6 @@ public class RavenMap {
 		// render all obstacles, none defined yet in xml so throwing exception
 		for (Obstacle obs : obstacles){
 			GameCanvas.thickBluePen();
-			Log.info("x" + obstacles.get(0).to().x);
 			obs.render();
 		} 
 		

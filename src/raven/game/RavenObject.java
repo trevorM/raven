@@ -21,8 +21,8 @@ public enum RavenObject {
 	OBSTACLE(10, "Obstacle"),  //possible unemplemented 
 	SLIDING_DOOR(11, "Sliding Door"),
 	TRIGGER(12, "Door Trigger"),
-	PROJECTILE(13, "Projectile"),
-	HIDE(14, "Obstacle");
+	PROJECTILE(13, "Projectile");
+	//HIDE(14, "Obstacle");
 	
 	private final int index;
 	private final String description;

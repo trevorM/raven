@@ -26,12 +26,14 @@ public class Obstacle  {
 		r = radius.x;
 		x = Xy.x;
 		y = Xy.y;
-		this.active = true;
 	}
 	
 
 	public Boolean active;
 	
+	public Obstacle() {
+		this.active = true;
+	}
 	
 	public boolean isObstacle(){
 		return true;
@@ -42,7 +44,6 @@ public class Obstacle  {
 		this.x = x;
 		this.y = y;
 		this.r = r;
-		this.active = true;
 	}
 	
 	
@@ -70,6 +71,13 @@ public class Obstacle  {
 		
 	}
 	
+	//public Vector2D normal()
+	//{
+	//vN = calculateNormal();
+	//vN.x = 50;
+	//vN.y = 10;
+	//	return vN;
+	//}
 	
 	public Vector2D from() { return Xy; }
 	public Vector2D to() { return radius; }
