@@ -35,7 +35,6 @@ public class Main {
     		long currentTime = System.nanoTime();
 
     		game.update((currentTime - lastTime) * 1.0e-9);
-    		
     		// Always dispose the canvas
     		//if(game.getMap() != null){
     		//if(!game.isPaused()) {

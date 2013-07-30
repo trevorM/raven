@@ -65,6 +65,27 @@ public class Geometry {
 			return false;
 		}
 	}
+	//returns closest intersection point or null
+	public static Double obstacleCollisionDetection(Vector2D A, Vector2D B, Vector2D C, List<Obstacle> obstacles)
+	{
+		
+		double distance = Double.MAX_VALUE;
+		
+		for(Obstacle ob: obstacles)
+		{
+			double dist = 0.0;
+			if(lineSegmentCircleIntersection(A, B, ob.from(), ob.to().x))
+			{
+				if(dist < distance)
+				{
+					distance = dist;
+				}
+			}
+		}
+		if(distance<Double.MAX_VALUE)
+		return distance;
+		return null;
+	}
 	
 	/**
 	 * given a line segment AB and a circle position and radius, this function

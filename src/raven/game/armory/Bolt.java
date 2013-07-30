@@ -70,13 +70,18 @@ public class Bolt extends RavenProjectile {
 			}
 
 			//test for impact with a wall
-			if (Geometry.FindClosestPointOfIntersectionWithWalls(position.sub(velocity), position, impactPoint, world.getMap().getWalls()) != null) {
+			if (Geometry.FindClosestPointOfIntersectionWithWalls(position.sub(velocity), position, impactPoint, world.getMap().getWalls()) != null)
+			{
 				isDead = true;
 				isImpacted = true;
-
 				return;
 			}
-
+			if(Geometry.obstacleCollisionDetection(position.sub(velocity), position, impactPoint, world.getMap().getObstacles()) != null)
+			{
+				isDead = true;
+				isImpacted = true;
+				return;
+			}
 		}
 	}
 }

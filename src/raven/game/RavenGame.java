@@ -24,6 +24,7 @@ import raven.game.messaging.Dispatcher;
 import raven.game.messaging.RavenMessage;
 import raven.game.navigation.PathManager;
 import raven.game.navigation.RavenPathPlanner;
+import raven.math.Geometry;
 import raven.math.Obstacle;
 import raven.math.Vector2D;
 import raven.math.WallIntersectionTest;
@@ -368,6 +369,7 @@ public class RavenGame {
 			
 			// switch the default steering behaviors on
 			bot.getSteering().wallAvoidanceOn();
+			bot.getSteering().obstacleAvoidanceOn();
 			bot.getSteering().separationOn();
 			bots.add(bot);
 			Log.info("game", "Bot " + bot.ID() + " added");
@@ -476,7 +478,13 @@ public class RavenGame {
 
 	/** returns true if the ray between A and B is unobstructed. */
 	public boolean isLOSOkay(final Vector2D A, final Vector2D B) {
-		return !WallIntersectionTest.doWallsObstructLineSegment(A, B, map.getWalls());
+		boolean obLos;
+		Vector2D C = A;
+		obLos = null == Geometry.obstacleCollisionDetection(A, B, C, map.getObstacles());
+		
+		
+		boolean wallLos = !WallIntersectionTest.doWallsObstructLineSegment(A, B, map.getWalls());
+		return obLos&&wallLos;
 	}
 
 	/**

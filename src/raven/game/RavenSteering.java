@@ -448,21 +448,17 @@ public class RavenSteering {
 	 * target- ravenBot that comes into line of site and initiates hide, want to run in 
 	 * directions closest to opposite if possible
 	 * list<IRavenBot>- positions of all ravenbots?**/
-	private void hide(List <Obstacle> obstacles, RavenBot me){
-		double shortest = 100000;
-		Obstacle closest = null;
-		for(Obstacle obs : obstacles){
-			Vector2D currentPos = me.pos();
-			Vector2D obsPos = obs.center();
-			double distance = Math.sqrt(Math.pow((currentPos.x - obsPos.x), 2) + Math.pow((currentPos.y - obsPos.y), 2));
-			if(shortest > distance){
-				closest = obs;
-			}
-		}
+	/*private Vector2D hide(final Vector2D hideSpot, final Deceleration deceleration, final List<IRavenBot> agents){
 		
-		seek(closest.center());//detect the closest intersection point to by getClosestIntersecPointToCircle in geometry seek there and stay then seek to direct other side if you see enemy 
+		Vector2D fromTarget = target.pos().sub(ravenBot.pos());//we want to hide from target
 		
-	}
+		double RelativeHeading = ravenBot.heading().dot(target.heading());
+		return fromTarget;
+		
+	/*	if(ravenBot.canStepBackward()){
+			//turn arount and run
+		}*/
+	//}
 
 	/* 
 	 * END BEHAVIOR DECLARATIONS
