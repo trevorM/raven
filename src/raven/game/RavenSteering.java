@@ -383,7 +383,6 @@ public class RavenSteering {
 					//is this the closest found so far? If so keep a record
 							if (DistToThisIP < DistToClosestIP)
 							{
-								Log.info("Replacing Obstacle" + oB); // the circle is being detected!
 								DistToClosestIP = DistToThisIP;
 
 								ClosestObs = oB;
@@ -479,7 +478,7 @@ public class RavenSteering {
 
 			if (!accumulateForce(steeringForce, force)) return steeringForce;
 		}
-		
+		if(world.getMap().getObstacles()!=null)
 		if (On(BehaviorType.OBSTACLE_AVOIDANCE))
 		{
 			force = obstacleAvoidance(world.getMap().getObstacles()).mul(weightObstacleAvoidance);
