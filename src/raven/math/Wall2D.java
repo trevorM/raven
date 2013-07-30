@@ -2,7 +2,7 @@ package raven.math;
 
 import java.io.IOException;
 import java.io.Writer;
-
+import raven.utils.Log;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 import raven.ui.GameCanvas;
@@ -36,7 +36,6 @@ public class Wall2D {
 	public Wall2D(Vector2D a, Vector2D b) {
 		vA = new Vector2D(a);
 		vB = new Vector2D(b);
-		
 		calculateNormal();
 	}
 	
@@ -52,6 +51,7 @@ public class Wall2D {
 	
 	public void render(boolean renderNormals) {
 		GameCanvas.line(vA, vB);
+		
 		if (renderNormals) {
 			int midX = (int)((vA.x + vB.x) / 2);
 			int midY = (int)((vA.y + vB.y) / 2);
@@ -75,7 +75,7 @@ public class Wall2D {
 	
 	public Writer write(Writer writer) throws IOException {
 		writer.write("\n" + from() + "," + to() + "," + normal());
-		
 		return writer;
+
 	}
 }

@@ -78,7 +78,8 @@ public class Rocket extends RavenProjectile {
 		//test for impact with a wall
 
 		Double dist = Geometry.FindClosestPointOfIntersectionWithWalls(position.sub(velocity), position, impactPoint, world.getMap().getWalls());
-		if (dist != null)
+		Double distO = (Geometry.obstacleCollisionDetection(position.sub(velocity), position, impactPoint, world.getMap().getObstacles()));
+		if (dist != null || distO != null)
 		{
 			isImpacted = true;
 

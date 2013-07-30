@@ -91,6 +91,13 @@ public class Pellet extends RavenProjectile {
 				position,
 				impactPoint,
 				world.getMap().getWalls());
+		
+		if(Geometry.obstacleCollisionDetection(position.sub(velocity), position, impactPoint, world.getMap().getObstacles()) != null)
+		{
+			isDead = true;
+			isImpacted = true;
+			return;
+		}
 
 		//test to see if the ray between the current position of the shell and 
 		//the start position intersects with any bots.

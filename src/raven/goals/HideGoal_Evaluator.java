@@ -17,7 +17,7 @@ public class HideGoal_Evaluator extends Goal_Evaluator {
 	public double calculateDesirability(RavenBot pBot)
 	{
 		
-		if(pBot.health() < 10){//read from params
+		if(pBot.health() < 10){
 			
 			//value used to tweak the desirability
 			Double Tweaker = 0.2;
@@ -57,7 +57,7 @@ public class HideGoal_Evaluator extends Goal_Evaluator {
 	public void RenderInfo(Vector2D Position, RavenBot pBot)
 	{
 			GameCanvas.textAtPos(Position, "Hide: " + String.valueOf((calculateDesirability(pBot))));
-			String s = String.valueOf(RavenFeature.DistanceToItem(pBot,RavenObject.HIDE));
+			String s = String.valueOf(RavenFeature.DistanceToItem(pBot,RavenObject.OBSTACLE));
 			Position.add(new Vector2D(0,15));
 			GameCanvas.textAtPos(Position, s);
 			return;
