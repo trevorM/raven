@@ -5,6 +5,7 @@ import java.util.List;
 import raven.game.RavenBot;
 import raven.game.RavenGame;
 import raven.game.RavenObject;
+import raven.game.interfaces.IRavenBot;
 import raven.goals.Goal.GoalType;
 import raven.math.Geometry;
 import raven.math.Obstacle;
@@ -24,8 +25,13 @@ public class HideGoal_Evaluator extends Goal_Evaluator {
 	public double calculateDesirability(RavenBot pBot)
 	{
 		this.world = pBot.getWorld();
-		if(pBot.health() < 100){
-			
+		boolean sensed = true;
+		
+		//for(IRavenBot opp: pBot.getSensoryMem().getListOfRecentlySensedOpponents())
+			//sensed = (pBot.getSensoryMem().isOpponentWithinFOV(opp));		
+		
+			if(pBot.health() < 100 && sensed)
+			{
 			//value used to tweak the desirability
 			Double Tweaker = 1000.8;
 
@@ -37,6 +43,7 @@ public class HideGoal_Evaluator extends Goal_Evaluator {
 			//maybe use obstacle.from() and ravenbot's pos
 			
 			double distanceToObstacle = 10000;
+			
 			if(world.getMap().getObstacles()!=null)
 			distanceToObstacle = Geometry.minDistanceToCenterOfObstacle(pBot.pos(), world.getMap().getObstacles(), world.getMap().getWalls());
 			
@@ -49,7 +56,8 @@ public class HideGoal_Evaluator extends Goal_Evaluator {
 			Desirability *= getBias();
 			Log.info("Distance to obstacle " + distanceToObstacle);
 			Log.info("Desire = " + Desirability);
-
+			
+			
 			return Desirability;
 		}
 		else
@@ -63,10 +71,12 @@ public class HideGoal_Evaluator extends Goal_Evaluator {
 		Obstacle os = new Obstacle();
 		if(pBot.getWorld().getMap().getObstacles()!=null)
 		os = Geometry.closestObstacle(pBot.pos(), pBot.getWorld().getMap().getObstacles(), pBot.getWorld().getMap().getWalls());
+	
 		try{
 			pBot.getBrain().addGoal_hide(os);
 		}catch(Exception ex){
 			System.out.println( ex.getMessage());
+		
 		}
 	}
 

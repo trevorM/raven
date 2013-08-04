@@ -66,6 +66,7 @@ public class Obstacle  {
 	{
 		double R = Math.sqrt(radius.x);
 		vN = new Vector2D(norm.x/R, norm.y/R);
+		vN.normalize();
 		return vN;
 		
 	}

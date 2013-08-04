@@ -408,9 +408,12 @@ public class RavenSteering {
 
 				if(normPoint!=null)
 				{
+			//		Log.info("norm point = " + normPoint.x + " " + normPoint.y);
+			//		Log.info("overshoot = " + overShoot.x + " " + overShoot.y);
 				//create a force in the direction of the wall normal, with a 
 				//magnitude of the overshoot
 				SteeringForce = obstacles.get(ClosestObs).calculateNormal(normPoint).mul(overShoot.length());
+			//		Log.info("SteeringForce = " + SteeringForce.x + " " + SteeringForce.y);
 				}
 
 				}
