@@ -336,6 +336,7 @@ public class RavenMap {
 		}
 		
 		// render all obstacles, none defined yet in xml so throwing exception
+		if(obstacles != null)
 		for (Obstacle obs : obstacles){
 			GameCanvas.thickBluePen();
 			obs.render();
@@ -371,6 +372,7 @@ public class RavenMap {
 	@Override
 	public int hashCode() {
 		int result = 0;
+		if(obstacles!=null)
 		result += obstacles.hashCode();  
 		result += walls.hashCode();
 		result += triggerSystem.hashCode();

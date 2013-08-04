@@ -39,6 +39,11 @@ public class Obstacle  {
 		return true;
 	}
 	
+	public double distanceToCenter(Vector2D from)
+	{
+		return Math.sqrt(Math.pow((this.from().x-from.x),2) + Math.pow((this.from().y-from.y),2));		
+	}
+	
 	public Obstacle(double x, double y, double r)
 	{
 		this.x = x;
@@ -53,12 +58,6 @@ public class Obstacle  {
 	
 	public void render(boolean renderNormals) {
 		GameCanvas.filledCircle(Xy, radius.x);
-		//unsure what this does...
-		//if (renderNormals) {
-			//int midX = (int)((vA.x + vB.x) / 2);
-			//int midY = (int)((vA.y + vB.y) / 2);
-			
-			//GameCanvas.line(midX, midY, (int)(midX + (vN.x * 5)), (int)(midY + (vN.y * 5)));}
 		}
 	
 	
@@ -67,17 +66,10 @@ public class Obstacle  {
 	{
 		double R = Math.sqrt(radius.x);
 		vN = new Vector2D(norm.x/R, norm.y/R);
+		vN.normalize();
 		return vN;
 		
 	}
-	
-	//public Vector2D normal()
-	//{
-	//vN = calculateNormal();
-	//vN.x = 50;
-	//vN.y = 10;
-	//	return vN;
-	//}
 	
 	public Vector2D from() { return Xy; }
 	public Vector2D to() { return radius; }

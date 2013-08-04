@@ -1,10 +1,11 @@
 package raven.goals;
 
 import raven.game.RavenBot;
+import raven.game.RavenGame;
 import raven.goals.Goal.GoalType;
 
 public abstract class Goal_Evaluator {
-
+	
 	private Double bias;
 
 	private GoalType goalTypeToAdd;

@@ -76,6 +76,7 @@ public class Geometry {
 			double dist = 0.0;
 			if(lineSegmentCircleIntersection(A, B, ob.from(), ob.to().x))
 			{
+				dist = ob.distanceToCenter(A);
 				if(dist < distance)
 				{
 					distance = dist;
@@ -85,6 +86,53 @@ public class Geometry {
 		if(distance<Double.MAX_VALUE)
 		return distance;
 		return null;
+	}
+	//One issue with this is that it fails to take into account whether the obstacle is behind
+	//a wall.  TO check this, might create a ray from the center of the obstacle and the bot
+	//then, this ray would be checked to see if it intersects any walls
+	public static double minDistanceToCenterOfObstacle(Vector2D A, List<Obstacle> obstacle, List<Wall2D> walls)
+	{
+		double Distance = Double.MAX_VALUE;
+		Vector2D impactPoint = new Vector2D(); 
+		for(Obstacle os: obstacle)
+		{
+			//if(null == FindClosestPointOfIntersectionWithWalls(A,os.from(), impactPoint, walls))
+			//{
+			double dist;
+			//find the distance to the center and then subtract the radius
+			dist = os.distanceToCenter(A)-os.to().x;
+			if(dist<Distance)
+			{
+				Distance = dist;
+			}
+			//}
+			
+		}
+		return Distance;
+	}
+	
+	public static Obstacle closestObstacle(Vector2D A, List<Obstacle> obstacle, List<Wall2D> walls)
+	{
+		Obstacle osa = null;
+		double Distance = Double.MAX_VALUE;
+		Vector2D impactPoint = new Vector2D(); 
+		for(Obstacle os: obstacle)
+		{
+			//if(null == FindClosestPointOfIntersectionWithWalls(A,os.from(), impactPoint, walls))
+			//{
+			double dist;
+			//find the distance to the center and then subtract the radius
+			dist = os.distanceToCenter(A)-os.to().x;
+			if(dist<Distance)
+			{
+				Distance = dist;
+				osa = os;
+			}
+			//}
+		}
+		
+		return osa;
+		
 	}
 	
 	/**
