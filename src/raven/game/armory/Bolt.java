@@ -76,6 +76,7 @@ public class Bolt extends RavenProjectile {
 				isImpacted = true;
 				return;
 			}
+			if(world.getMap().getObstacles()!=null)
 			if(Geometry.obstacleCollisionDetection(position.sub(velocity), position, impactPoint, world.getMap().getObstacles()) != null)
 			{
 				isDead = true;

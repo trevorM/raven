@@ -476,15 +476,19 @@ public class RavenGame {
 		return false;
 	}
 
-	/** returns true if the ray between A and B is unobstructed. */
+	/** returns true if the ray between A and B is unobstructed.
+	 * currently does not block FoV when bots are behind an obstacle
+	 * to change this behavior, uncomment obLos = null...etc,
+	 *  comment out obLos = true
+	 *  */
 	public boolean isLOSOkay(final Vector2D A, final Vector2D B) {
 		boolean obLos;
 		Vector2D C = A;
-		obLos = null == Geometry.obstacleCollisionDetection(A, B, C, map.getObstacles());
-		
+		//obLos = null == Geometry.obstacleCollisionDetection(A, B, C, map.getObstacles());
+		obLos = false; //allows site through obstacles
 		
 		boolean wallLos = !WallIntersectionTest.doWallsObstructLineSegment(A, B, map.getWalls());
-		return obLos&&wallLos;
+		return wallLos;
 	}
 
 	/**
@@ -494,6 +498,7 @@ public class RavenGame {
 	 * Note: This function is not implemented in the C++ version!
 	 */
 	public double getDistanceToClosestWall(Vector2D origin, Vector2D heading) {
+		
 		return 0;
 	}
 

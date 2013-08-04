@@ -7,6 +7,8 @@ import raven.game.armory.RavenWeapon;
 import raven.game.armory.RocketLauncher;
 import raven.game.armory.Shotgun;
 import raven.script.RavenScript;
+import raven.game.RavenGame;
+
 
 public class RavenFeature {
 
@@ -40,7 +42,6 @@ public class RavenFeature {
 
 		return DistanceToItem / MaxDistance;
 	}
-
 	//returns a value between 0 and 1 based on how much ammo the bot has for
 	//the given weapon, and the maximum amount of ammo the bot can carry. The
 	//closer the amount carried is to the max amount, the higher the score

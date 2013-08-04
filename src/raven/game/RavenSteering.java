@@ -383,7 +383,6 @@ public class RavenSteering {
 					//is this the closest found so far? If so keep a record
 							if (DistToThisIP < DistToClosestIP)
 							{
-								Log.info("Replacing Obstacle" + oB); // the circle is being detected!
 								DistToClosestIP = DistToThisIP;
 
 								ClosestObs = oB;
@@ -409,9 +408,12 @@ public class RavenSteering {
 
 				if(normPoint!=null)
 				{
+			//		Log.info("norm point = " + normPoint.x + " " + normPoint.y);
+			//		Log.info("overshoot = " + overShoot.x + " " + overShoot.y);
 				//create a force in the direction of the wall normal, with a 
 				//magnitude of the overshoot
 				SteeringForce = obstacles.get(ClosestObs).calculateNormal(normPoint).mul(overShoot.length());
+			//		Log.info("SteeringForce = " + SteeringForce.x + " " + SteeringForce.y);
 				}
 
 				}
@@ -479,7 +481,7 @@ public class RavenSteering {
 
 			if (!accumulateForce(steeringForce, force)) return steeringForce;
 		}
-		
+		if(world.getMap().getObstacles()!=null)
 		if (On(BehaviorType.OBSTACLE_AVOIDANCE))
 		{
 			force = obstacleAvoidance(world.getMap().getObstacles()).mul(weightObstacleAvoidance);

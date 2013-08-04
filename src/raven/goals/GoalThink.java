@@ -4,6 +4,7 @@ import java.util.Vector;
 
 import raven.game.RavenBot;
 import raven.game.RavenObject;
+import raven.math.Obstacle;
 import raven.math.Vector2D;
 import raven.utils.Log;
 
@@ -168,10 +169,10 @@ public class GoalThink extends GoalComposite<RavenBot> {
 	@Override
 	public void terminate() {}
 
-	public void addGoal_hide() {
+	public void addGoal_hide(Obstacle os) {
 		if (notPresent(Goal.GoalType.goal_hide)){
 			removeAllSubgoals();
-			AddSubgoal( new Goal_Hide(m_pOwner));
+			AddSubgoal( new Goal_Hide(m_pOwner, os));
 			Log.debug("GoalThink", "Added new Goal_Hide to bot " + m_pOwner.ID());
 		}
 	}
